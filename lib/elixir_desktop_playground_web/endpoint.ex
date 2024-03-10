@@ -1,5 +1,5 @@
 defmodule ElixirDesktopPlaygroundWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :elixir_desktop_playground
+  use Desktop.Endpoint, otp_app: :elixir_desktop_playground
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
@@ -7,7 +7,7 @@ defmodule ElixirDesktopPlaygroundWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_elixir_desktop_playground_key",
-    signing_salt: "A/V/uH9s",
+    signing_salt: "xdZ4fBkg",
     same_site: "Lax"
   ]
 
@@ -29,12 +29,7 @@ defmodule ElixirDesktopPlaygroundWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :elixir_desktop_playground
   end
-
-  plug Phoenix.LiveDashboard.RequestLogger,
-    param_key: "request_logger",
-    cookie_key: "request_logger"
 
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
@@ -47,5 +42,6 @@ defmodule ElixirDesktopPlaygroundWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug Desktop.Auth
   plug ElixirDesktopPlaygroundWeb.Router
 end

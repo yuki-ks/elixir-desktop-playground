@@ -9,18 +9,19 @@ defmodule ElixirDesktopPlayground.Application do
   def start(_type, _args) do
     children = [
       ElixirDesktopPlaygroundWeb.Telemetry,
-      ElixirDesktopPlayground.Repo,
-      {Ecto.Migrator,
-        repos: Application.fetch_env!(:elixir_desktop_playground, :ecto_repos),
-        skip: skip_migrations?()},
-      {DNSCluster, query: Application.get_env(:elixir_desktop_playground, :dns_cluster_query) || :ignore},
+      {DNSCluster,
+       query: Application.get_env(:elixir_desktop_playground, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: ElixirDesktopPlayground.PubSub},
-      # Start the Finch HTTP client for sending emails
-      {Finch, name: ElixirDesktopPlayground.Finch},
       # Start a worker by calling: ElixirDesktopPlayground.Worker.start_link(arg)
       # {ElixirDesktopPlayground.Worker, arg},
       # Start to serve requests, typically the last entry
-      ElixirDesktopPlaygroundWeb.Endpoint
+      ElixirDesktopPlaygroundWeb.Endpoint,
+      {Desktop.Window,
+       [
+         app: :elixir_desktop_playground,
+         id: ElixirDesktopPlaygroundWindow,
+         url: &ElixirDesktopPlaygroundWeb.Endpoint.url/0
+       ]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -35,10 +36,5 @@ defmodule ElixirDesktopPlayground.Application do
   def config_change(changed, _new, removed) do
     ElixirDesktopPlaygroundWeb.Endpoint.config_change(changed, removed)
     :ok
-  end
-
-  defp skip_migrations?() do
-    # By default, sqlite migrations are run when using a release
-    System.get_env("RELEASE_NAME") != nil
   end
 end

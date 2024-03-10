@@ -8,7 +8,6 @@
 import Config
 
 config :elixir_desktop_playground,
-  ecto_repos: [ElixirDesktopPlayground.Repo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
@@ -23,16 +22,7 @@ config :elixir_desktop_playground, ElixirDesktopPlaygroundWeb.Endpoint,
     layout: false
   ],
   pubsub_server: ElixirDesktopPlayground.PubSub,
-  live_view: [signing_salt: "MG75WLHS"]
-
-# Configures the mailer
-#
-# By default it uses the "Local" adapter which stores the emails
-# locally. You can see the emails in your browser, at "/dev/mailbox".
-#
-# For production it's recommended to configure a different adapter
-# at the `config/runtime.exs`.
-config :elixir_desktop_playground, ElixirDesktopPlayground.Mailer, adapter: Swoosh.Adapters.Local
+  live_view: [signing_salt: "3I3NFGrY"]
 
 # Configure esbuild (the version is required)
 config :esbuild,
